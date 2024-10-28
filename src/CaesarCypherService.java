@@ -1,5 +1,21 @@
 public class CaesarCypherService {
 
+
+    public static String encrypt(String filePath, String key) {
+        String data = FileReaderService.readData(filePath);
+        int offset = Integer.parseInt(key);
+        String res = encryptEngData(data, offset);
+        FileReaderService.writeData(filePath, res, "[ENCRYPT]");
+        return res;
+    }
+
+    public static void decrypt(String filePath, String key){
+        String data = FileReaderService.readData(filePath);
+        int offset = Integer.parseInt(key);
+        String res = decryptEngData(data, offset);
+        FileReaderService.writeData(filePath, res, "[DECRYPT]");
+    }
+
     public static String encryptEngData(String inputData, int offset) {
         inputData = inputData.toLowerCase();
         StringBuilder encryptData = new StringBuilder();
@@ -19,5 +35,6 @@ public class CaesarCypherService {
     public static String decryptEngData(String inputData, int offset) {
         return encryptEngData(inputData, 26 - (offset % 26));
     }
+
 
 }

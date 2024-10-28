@@ -24,7 +24,7 @@ public class App {
                         key = reader.readLine();
                     }
                     if (command.equals("1")) {
-                        CaesarCypherService.encryptEngData("", 0);
+                        CaesarCypherService.encrypt(filePath, key);
                     } else if (command.equals("2")) {
                         CaesarCypherService.decryptEngData("", 0);
                     } else if (command.equals("3")) {
