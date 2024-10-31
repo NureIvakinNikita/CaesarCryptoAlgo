@@ -10,19 +10,21 @@ public class App {
         String command = "", filePath = "", key="";
 
         if (args.length == 0) {
-            System.out.println("Для виходу з програми введіть 4.");
-            while(true) {
-                try(BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
-                    if (reader.readLine().equals("4")) {
+            try(BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
+                while(true) {
+
+                    System.out.println("Введіт одну з доступних команад 1 - ENCRYPT, " +
+                            "2 - DECRYPT, 3 - BRUTE_FORCE, 4 - EXIT:");
+
+                    command = reader.readLine();
+                    if (command.equals("4")) {
                         System.out.println("До побачення!");
                         break;
                     }
-                    System.out.println("Введіт одну з доступних команад 1 - ENCRYPT, " +
-                            "2 - DECRYPT, 3 - BRUTE_FORCE:");
-                    command = reader.readLine();
                     System.out.println("Введіть шлях до файлу: ");
                     filePath = reader.readLine();
                     if (command.equals("1") || command.equals("2")) {
+                        System.out.println("Введіть ключ:");
                         key = reader.readLine();
                     }
                     if (command.equals("1")) {
@@ -32,9 +34,10 @@ public class App {
                     } else if (command.equals("3")) {
                         CaesarCypherService.bruteForceDecrypt(filePath);
                     }
-                } catch (IOException e) {
-                    System.out.println("Відубался помилка під час зчитування тексту.");
+
                 }
+            } catch (IOException e) {
+                System.out.println("Відубался помилка під час зчитування тексту.");
             }
         }
     }

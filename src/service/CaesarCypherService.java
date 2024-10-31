@@ -7,6 +7,8 @@ import java.util.Set;
 public class CaesarCypherService {
 
     private static final Set<String> DICTIONARY = new HashSet<>();
+    private static final String ALL_SYMBOLS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.,«»\"':!? ";
+
 
     static {
         DICTIONARY.add("the");
@@ -44,6 +46,11 @@ public class CaesarCypherService {
         DICTIONARY.add("must");
         DICTIONARY.add("should");
         DICTIONARY.add("to");
+        DICTIONARY.add("hello");
+        DICTIONARY.add("hi");
+        DICTIONARY.add("good day");
+        DICTIONARY.add("good evening");
+        DICTIONARY.add("good afternoon");
     }
 
 
@@ -62,15 +69,14 @@ public class CaesarCypherService {
         FileReaderService.writeData(filePath, res, "[DECRYPT]");
     }
 
+
     public static String encryptEngData(String inputData, int offset) {
-        inputData = inputData.toLowerCase();
         StringBuilder encryptData = new StringBuilder();
         for (char character : inputData.toCharArray()) {
-            if (Character.isLetter(character)) {
-                int originalAlphabetPosition = character - 'a';
-                int newAlphabetPosition = (originalAlphabetPosition + offset) % 26;
-                char newCharacter = (char) ('a' + newAlphabetPosition);
-                encryptData.append(newCharacter);
+            int index = ALL_SYMBOLS.indexOf(character);
+            if (index != -1) {
+                int newIndex = (index + offset) % ALL_SYMBOLS.length();
+                encryptData.append(ALL_SYMBOLS.charAt(newIndex));
             } else {
                 encryptData.append(character);
             }
@@ -79,24 +85,41 @@ public class CaesarCypherService {
     }
 
     public static String decryptEngData(String inputData, int offset) {
-        return encryptEngData(inputData, 26 - (offset % 26));
+        StringBuilder decryptData = new StringBuilder();
+        for (char character : inputData.toCharArray()) {
+            int index = ALL_SYMBOLS.indexOf(character);
+            if (index != -1) {
+                int newIndex = (index - offset) % ALL_SYMBOLS.length();
+                if (newIndex < 0) {
+                    newIndex += ALL_SYMBOLS.length();
+                }
+                decryptData.append(ALL_SYMBOLS.charAt(newIndex));
+            } else {
+                decryptData.append(character);
+            }
+        }
+        return decryptData.toString();
     }
+
 
     public static void bruteForceDecrypt(String filePath) {
         String encryptedData = FileReaderService.readData(filePath);
-        System.out.println("Результати брутфорс-розшифровки:");
+
         for (int key = 1; key < 26; key++) {
             String decryptedData = decryptEngData(encryptedData, key);
             if (isReadable(decryptedData)) {
+                System.out.print("Результати брутфорс-розшифровки:");
                 System.out.println("Ключ: " + key + " - " + decryptedData);
-                FileReaderService.writeData(filePath, decryptedData, "[ENCRYPT]");
+                FileReaderService.writeData(filePath, decryptedData, "[BRUTE_FORCE]");
+                return;
             }
         }
+        System.out.println("Не вдалося декодувати перевірте чи надаєте ви закодований файл або використовується інше кодування.");
     }
 
     private static boolean isReadable(String text) {
         for (String word : DICTIONARY) {
-            if (text.contains(word)) {
+            if (text.toLowerCase().contains(word)) {
                 return true;
             }
         }

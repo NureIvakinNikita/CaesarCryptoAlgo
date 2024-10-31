@@ -28,7 +28,12 @@ public class FileReaderService {
 
         int dotIndex = fileName.lastIndexOf('.');
         if (dotIndex > 0) {
-            String nameWithoutExtension = fileName.substring(0, dotIndex);
+            String nameWithoutExtension = "";
+            if (fileName.contains("[")) {
+                nameWithoutExtension = fileName.substring(0, fileName.indexOf("["));
+            } else {
+                nameWithoutExtension = fileName.substring(0, dotIndex);
+            }
             String extension = fileName.substring(dotIndex);
 
             newFileName = nameWithoutExtension + operation + extension;
