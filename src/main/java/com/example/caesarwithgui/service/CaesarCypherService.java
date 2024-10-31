@@ -1,4 +1,8 @@
-package service;
+package com.example.caesarwithgui.service;
+
+import com.example.caesarwithgui.dto.BruteForceResponse;
+import com.example.caesarwithgui.dto.DecryptionResponse;
+import com.example.caesarwithgui.dto.EncryptionResponse;
 
 import java.util.Dictionary;
 import java.util.HashSet;
@@ -54,19 +58,20 @@ public class CaesarCypherService {
     }
 
 
-    public static String encrypt(String filePath, String key) {
+    public static EncryptionResponse encrypt(String filePath, String key) {
         String data = FileReaderService.readData(filePath);
         int offset = Integer.parseInt(key);
         String res = encryptEngData(data, offset);
-        FileReaderService.writeData(filePath, res, "[ENCRYPT]");
-        return res;
+        String newFilePath = FileReaderService.writeData(filePath, res, "[ENCRYPT]");
+        return new EncryptionResponse("Encryption was successful.","Path to the file: "+newFilePath);
     }
 
-    public static void decrypt(String filePath, String key){
+    public static DecryptionResponse decrypt(String filePath, String key){
         String data = FileReaderService.readData(filePath);
         int offset = Integer.parseInt(key);
         String res = decryptEngData(data, offset);
-        FileReaderService.writeData(filePath, res, "[DECRYPT]");
+        String newFilePath = FileReaderService.writeData(filePath, res, "[DECRYPT]");
+        return new DecryptionResponse("Decryption was successful.","Path to the file: "+newFilePath);
     }
 
 
@@ -102,7 +107,7 @@ public class CaesarCypherService {
     }
 
 
-    public static void bruteForceDecrypt(String filePath) {
+    public static BruteForceResponse bruteForceDecrypt(String filePath) {
         String encryptedData = FileReaderService.readData(filePath);
 
         for (int key = 1; key < 26; key++) {
@@ -110,11 +115,11 @@ public class CaesarCypherService {
             if (isReadable(decryptedData)) {
                 System.out.print("Результати брутфорс-розшифровки:");
                 System.out.println("Ключ: " + key + " - " + decryptedData);
-                FileReaderService.writeData(filePath, decryptedData, "[BRUTE_FORCE]");
-                return;
+                String newFilePath = FileReaderService.writeData(filePath, decryptedData, "[BRUTE_FORCE]");
+                return new BruteForceResponse("Key: "+key, "Brute force was successful.", "Path to the file: "+newFilePath);
             }
         }
-        System.out.println("Не вдалося декодувати перевірте чи надаєте ви закодований файл або використовується інше кодування.");
+        return  new BruteForceResponse("Не вдалося декодувати перевірте чи надаєте ви закодований файл або використовується інше кодування.");
     }
 
     private static boolean isReadable(String text) {

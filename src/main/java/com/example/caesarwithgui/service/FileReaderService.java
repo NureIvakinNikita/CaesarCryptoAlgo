@@ -1,4 +1,4 @@
-package service;
+package com.example.caesarwithgui.service;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -21,7 +21,7 @@ public class FileReaderService {
         return result.toString();
     }
 
-    public static void writeData(String filePath, String data, String operation) {
+    public static String writeData(String filePath, String data, String operation) {
         java.nio.file.Path originalPath = Paths.get(filePath);
         String fileName = originalPath.getFileName().toString();
         String newFileName = getFileNaming(fileName, operation);
@@ -36,6 +36,7 @@ public class FileReaderService {
         } catch (IOException e) {
             System.out.println("Не вдалося зробити запис у файл");
         }
+        return newFileName;
     }
 
     public static String getFileNaming(String fileName, String operation){
