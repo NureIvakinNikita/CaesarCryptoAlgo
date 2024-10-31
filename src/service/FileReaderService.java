@@ -24,8 +24,21 @@ public class FileReaderService {
     public static void writeData(String filePath, String data, String operation) {
         java.nio.file.Path originalPath = Paths.get(filePath);
         String fileName = originalPath.getFileName().toString();
-        String newFileName;
+        String newFileName = getFileNaming(fileName, operation);
 
+
+
+        Path newFilePath = originalPath.getParent().resolve(newFileName);
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(newFilePath.toFile()))) {
+            writer.write(data);
+            System.out.println("Дані успішно записані у файл: " + newFilePath);
+        } catch (IOException e) {
+            System.out.println("Не вдалося зробити запис у файл");
+        }
+    }
+
+    public static String getFileNaming(String fileName, String operation){
         int dotIndex = fileName.lastIndexOf('.');
         if (dotIndex > 0) {
             String nameWithoutExtension = "";
@@ -36,19 +49,9 @@ public class FileReaderService {
             }
             String extension = fileName.substring(dotIndex);
 
-            newFileName = nameWithoutExtension + operation + extension;
+            return nameWithoutExtension + operation + extension;
         } else {
-
-            newFileName = fileName + operation;
-        }
-
-        Path newFilePath = originalPath.getParent().resolve(newFileName);
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(newFilePath.toFile()))) {
-            writer.write(data);
-            System.out.println("Дані успішно записані у файл: " + newFilePath);
-        } catch (IOException e) {
-            System.out.println("Не вдалося зробити запис у файл");
+            return fileName + operation;
         }
     }
 }
