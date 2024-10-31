@@ -1,3 +1,5 @@
+import service.CaesarCypherService;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,9 +28,9 @@ public class App {
                     if (command.equals("1")) {
                         CaesarCypherService.encrypt(filePath, key);
                     } else if (command.equals("2")) {
-                        CaesarCypherService.decryptEngData("", 0);
+                        CaesarCypherService.decrypt(filePath, key);
                     } else if (command.equals("3")) {
-                        ///Add BrutForce
+                        CaesarCypherService.bruteForceDecrypt(filePath);
                     }
                 } catch (IOException e) {
                     System.out.println("Відубался помилка під час зчитування тексту.");

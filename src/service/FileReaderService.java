@@ -1,3 +1,5 @@
+package service;
+
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,7 +25,6 @@ public class FileReaderService {
         java.nio.file.Path originalPath = Paths.get(filePath);
         String fileName = originalPath.getFileName().toString();
         String newFileName;
-
 
         int dotIndex = fileName.lastIndexOf('.');
         if (dotIndex > 0) {
