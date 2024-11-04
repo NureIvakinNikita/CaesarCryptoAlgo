@@ -13,10 +13,18 @@ public class HelloApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         stage.setScene(scene);
+        HelloController controller = fxmlLoader.getController();
+        String[] args = getParameters().getRaw().toArray(new String[0]); // Get command-line arguments
+        controller.handleCommandLineArgs(args); // Pass them to the controller
+
         stage.show();
     }
 
     public static void main(String[] args) {
-        launch();
+        if (args.length > 0) {
+            launch(args);
+        } else {
+            launch();
+        }
     }
 }

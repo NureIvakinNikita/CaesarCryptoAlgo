@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 
 public class FileReaderService {
 
-    public static String readData(String filePath) {
+    public String readData(String filePath) {
         StringBuilder result = new StringBuilder();
         try(BufferedReader reader = new BufferedReader(new FileReader(Paths.get(filePath).toFile()))) {
             String line;
@@ -14,14 +14,14 @@ public class FileReaderService {
                 result.append(line).append(System.lineSeparator());
             }
         } catch (FileNotFoundException e) {
-            System.out.println("Файл не знайдено вкажіть правилний шлях.");
+            System.out.println("File not found, please enter the correct path.");
         } catch (IOException e) {
-            System.out.println("не вдалося прочитати дані з файлую");
+            System.out.println("Could not read data from the file.");
         }
         return result.toString();
     }
 
-    public static String writeData(String filePath, String data, String operation) {
+    public String writeData(String filePath, String data, String operation) throws IOException {
         java.nio.file.Path originalPath = Paths.get(filePath);
         String fileName = originalPath.getFileName().toString();
         String newFileName = getFileNaming(fileName, operation);
@@ -30,15 +30,15 @@ public class FileReaderService {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(newFilePath.toFile()))) {
             writer.write(data);
-            System.out.println("Дані успішно записані у файл: " + newFilePath);
+            System.out.println("The data was successfully written to the file: " + newFilePath);
         } catch (IOException e) {
-            System.out.println("Не вдалося зробити запис у файл");
+            throw new IOException("Failed to write to file.");
         }
 
         return newFilePath.toFile().getAbsolutePath();
     }
 
-    public static String getFileNaming(String fileName, String operation){
+    public String getFileNaming(String fileName, String operation){
         int dotIndex = fileName.lastIndexOf('.');
         if (dotIndex > 0) {
             String nameWithoutExtension = "";

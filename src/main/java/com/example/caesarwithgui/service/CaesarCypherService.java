@@ -5,6 +5,7 @@ import com.example.caesarwithgui.dto.DecryptionResponse;
 import com.example.caesarwithgui.dto.EncryptionResponse;
 
 
+import java.io.IOException;
 import java.util.Dictionary;
 import java.util.HashSet;
 import java.util.Set;
@@ -58,25 +59,35 @@ public class CaesarCypherService {
         DICTIONARY.add("good afternoon");
     }
 
+    private FileReaderService fileReaderService = new FileReaderService();
 
-    public static EncryptionResponse encrypt(String filePath, String key) {
-        String data = com.example.caesarwithgui.service.FileReaderService.readData(filePath);
-        int offset = Integer.parseInt(key);
-        String res = encryptEngData(data, offset);
-        String newFilePath = FileReaderService.writeData(filePath, res, "[ENCRYPT]");
-        return new EncryptionResponse("Encryption was successful.","Path to the file: "+newFilePath);
+    public EncryptionResponse encrypt(String filePath, String key) {
+        try {
+            String data = fileReaderService.readData(filePath);
+            int offset = Integer.parseInt(key);
+            String res = encryptEngData(data, offset);
+            String newFilePath = fileReaderService.writeData(filePath, res, "[ENCRYPT]");
+            return new EncryptionResponse("Encryption was successful.","Path to the file: "+newFilePath);
+        } catch (IOException e) {
+           return new EncryptionResponse("Encryption has failed.", e.getMessage());
+        }
     }
 
-    public static DecryptionResponse decrypt(String filePath, String key){
-        String data = FileReaderService.readData(filePath);
-        int offset = Integer.parseInt(key);
-        String res = decryptEngData(data, offset);
-        String newFilePath = FileReaderService.writeData(filePath, res, "[DECRYPT]");
-        return new DecryptionResponse("Decryption was successful.","Path to the file: "+newFilePath);
+    public DecryptionResponse decrypt(String filePath, String key) {
+        try {
+            String data = fileReaderService.readData(filePath);
+            int offset = Integer.parseInt(key);
+            String res = decryptEngData(data, offset);
+            String newFilePath = fileReaderService.writeData(filePath, res, "[DECRYPT]");
+            return new DecryptionResponse("Decryption was successful.", "Path to the file: " + newFilePath);
+        } catch (IOException e) {
+            return new DecryptionResponse("Decryption has failed.", e.getMessage());
+        }
+
     }
 
 
-    public static String encryptEngData(String inputData, int offset) {
+    public String encryptEngData(String inputData, int offset) {
         StringBuilder encryptData = new StringBuilder();
         for (char character : inputData.toCharArray()) {
             int index = ALL_SYMBOLS.indexOf(character);
@@ -90,7 +101,25 @@ public class CaesarCypherService {
         return encryptData.toString();
     }
 
-    public static String decryptEngData(String inputData, int offset) {
+    public BruteForceResponse bruteForceDecrypt(String filePath){
+        try {
+            String encryptedData = fileReaderService.readData(filePath);
+
+            for (int key = 1; key < 26; key++) {
+                String decryptedData = decryptEngData(encryptedData, key);
+                if (isReadable(decryptedData)) {
+                    System.out.print("Results of brute force decryption:");
+                    System.out.println("Ключ: " + key + " - " + decryptedData);
+                    String newFilePath = fileReaderService.writeData(filePath, decryptedData, "[BRUTE_FORCE]");
+                    return new BruteForceResponse("Key: " + key, "Brute force was successful.", "Path to the file: " + newFilePath);
+                }
+            }
+            return new BruteForceResponse("Decode failed, check if you are providing an encoded file or if you are using a different encoding.");
+        } catch (IOException e) {
+            return new BruteForceResponse(e.getMessage());
+        }
+    }
+    public String decryptEngData(String inputData, int offset) {
         StringBuilder decryptData = new StringBuilder();
         for (char character : inputData.toCharArray()) {
             int index = ALL_SYMBOLS.indexOf(character);
@@ -108,22 +137,9 @@ public class CaesarCypherService {
     }
 
 
-    public static BruteForceResponse bruteForceDecrypt(String filePath) {
-        String encryptedData = FileReaderService.readData(filePath);
 
-        for (int key = 1; key < 26; key++) {
-            String decryptedData = decryptEngData(encryptedData, key);
-            if (isReadable(decryptedData)) {
-                System.out.print("Результати брутфорс-розшифровки:");
-                System.out.println("Ключ: " + key + " - " + decryptedData);
-                String newFilePath = FileReaderService.writeData(filePath, decryptedData, "[BRUTE_FORCE]");
-                return new BruteForceResponse("Key: "+key, "Brute force was successful.", "Path to the file: "+newFilePath);
-            }
-        }
-        return  new BruteForceResponse("Не вдалося декодувати перевірте чи надаєте ви закодований файл або використовується інше кодування.");
-    }
 
-    private static boolean isReadable(String text) {
+    private boolean isReadable(String text) {
         for (String word : DICTIONARY) {
             if (text.toLowerCase().contains(word)) {
                 return true;

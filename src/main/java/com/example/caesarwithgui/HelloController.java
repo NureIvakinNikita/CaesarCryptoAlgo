@@ -33,6 +33,7 @@ public class HelloController {
     @FXML
     private TextArea resultAreaOutput;
 
+    private CaesarCypherService service = new CaesarCypherService();
 
     @FXML
     protected void onEncryptButtonClick() {
@@ -40,7 +41,7 @@ public class HelloController {
         String key = keyInput.getText();
 
         if (!filePath.isEmpty() && !key.isEmpty()) {
-            EncryptionResponse response = CaesarCypherService.encrypt(filePath, key);
+            EncryptionResponse response = service.encrypt(filePath, key);
             resultAreaOutput.setText(response.toString());
         } else {
             resultAreaOutput.setText("Please provide both file path and key.");
@@ -53,7 +54,7 @@ public class HelloController {
         String key = keyInput.getText();
 
         if (!filePath.isEmpty() && !key.isEmpty()) {
-            DecryptionResponse response = CaesarCypherService.decrypt(filePath, key);
+            DecryptionResponse response = service.decrypt(filePath, key);
             resultAreaOutput.setText(response.toString());
         } else {
             resultAreaOutput.setText("Please provide both file path and key.");
@@ -64,7 +65,7 @@ public class HelloController {
     protected void onBruteForceButtonClick() {
         String filePath = filePathInput.getText();
         if (!filePath.isEmpty()) {
-            BruteForceResponse response = CaesarCypherService.bruteForceDecrypt(filePath);
+            BruteForceResponse response = service.bruteForceDecrypt(filePath);
             resultAreaOutput.setText(response.toString());
         } else {
             resultAreaOutput.setText("Please provide file path.");
@@ -75,5 +76,31 @@ public class HelloController {
     protected void onExitButtonClick() {
         Stage stage = (Stage) exitButton.getScene().getWindow();
         stage.close();
+    }
+
+    public void handleCommandLineArgs(String[] args) {
+        if (args.length == 3) {
+            String operation = args[0];
+            String path = args[1];
+            String key = args[2];
+
+            filePathInput.setText(path);
+            keyInput.setText(key);
+
+            switch (operation) {
+                case "[ENCRYPT]":
+                    onEncryptButtonClick();
+                    break;
+                case "[DECRYPT]":
+                    onDecryptButtonClick();
+                    break;
+                case "[BRUTE_FORCE]":
+                    onBruteForceButtonClick();
+                    break;
+                default:
+                    System.out.println("Invalid operation");
+            }
+            System.exit(0);
+        }
     }
 }

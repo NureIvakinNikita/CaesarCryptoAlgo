@@ -15,7 +15,6 @@ public class BruteForceResponse extends Response{
 
     @Override
     public String toString() {
-        return "Brute force response: "+ message + ".\n"+
-                "Path of the encrypted file: " + newFilePath + ".\n" + key;
+        return "Brute force response: "+ message + ".\n"+newFilePath + ".\n" + key;
     }
 }

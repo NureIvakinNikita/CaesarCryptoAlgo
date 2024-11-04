@@ -8,7 +8,6 @@ public class DecryptionResponse extends Response {
 
     @Override
     public String toString() {
-        return "Decryption response: "+ message + ".\n"+
-                "Path of the decrypted file: " + newFilePath + ".\n";
+        return "Decryption response: "+ message + ".\n"+ newFilePath + ".\n";
     }
 }
