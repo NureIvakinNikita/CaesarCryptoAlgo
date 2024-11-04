@@ -26,8 +26,6 @@ public class FileReaderService {
         String fileName = originalPath.getFileName().toString();
         String newFileName = getFileNaming(fileName, operation);
 
-
-
         Path newFilePath = originalPath.getParent().resolve(newFileName);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(newFilePath.toFile()))) {
@@ -36,7 +34,8 @@ public class FileReaderService {
         } catch (IOException e) {
             System.out.println("Не вдалося зробити запис у файл");
         }
-        return newFileName;
+
+        return newFilePath.toFile().getAbsolutePath();
     }
 
     public static String getFileNaming(String fileName, String operation){

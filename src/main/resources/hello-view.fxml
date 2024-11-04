@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<TitledPane fx:id="caesarMain" animated="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="397.0" text="Caesar Cypher Encryptor and Decryptor" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.caesarwithgui.HelloController">
+    <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="374.0" prefWidth="414.0">
+            <children>
+                <Label fx:id="filePath" layoutX="150.0" layoutY="41.0" prefHeight="17.0" prefWidth="110.0" text="Enter path of the file" textAlignment="CENTER" />
+                <TextField fx:id="filePathInput" layoutX="131.0" layoutY="67.0" />
+                <Label fx:id="key" layoutX="170.0" layoutY="99.0" prefHeight="17.0" prefWidth="71.0" text="Enter the key" />
+                <TextField fx:id="keyInput" layoutX="133.0" layoutY="124.0" />
+                <Button fx:id="encryptButton" layoutX="36.0" layoutY="187.0" mnemonicParsing="false" onAction="#onEncryptButtonClick" text="Encrypt" />
+                <Button fx:id="decryptButton" layoutX="120.0" layoutY="187.0" mnemonicParsing="false" onAction="#onDecryptButtonClick" text="Decrypt" />
+                <Button fx:id="bruteForceButton" layoutX="205.0" layoutY="187.0" mnemonicParsing="false" onAction="#onBruteForceButtonClick" text="Brute Force" />
+                <Button fx:id="exitButton" layoutX="318.0" layoutY="187.0" mnemonicParsing="false" onAction="#onExitButtonClick" text="Exit" />
+                <Label fx:id="filePath1" layoutX="37.0" layoutY="234.0" prefHeight="17.0" prefWidth="110.0" text="Result of operation" textAlignment="CENTER" />
+                <TextArea fx:id="resultAreaOutput" layoutX="41.0" layoutY="257.0" prefHeight="96.0" prefWidth="329.0" />
+            </children></AnchorPane>
+    </content>
+</TitledPane>

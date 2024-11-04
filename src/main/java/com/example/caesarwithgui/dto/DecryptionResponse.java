@@ -5,4 +5,10 @@ public class DecryptionResponse extends Response {
         this.message = message;
         this.newFilePath = newFilePath;
     }
+
+    @Override
+    public String toString() {
+        return "Decryption response: "+ message + ".\n"+
+                "Path of the decrypted file: " + newFilePath + ".\n";
+    }
 }

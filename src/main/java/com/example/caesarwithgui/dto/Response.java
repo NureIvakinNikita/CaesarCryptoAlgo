@@ -1,7 +1,23 @@
 package com.example.caesarwithgui.dto;
 
 public abstract class Response {
-    public String message;
+    protected String message;
 
-    public String newFilePath;
+    protected String newFilePath;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public String getNewFilePath() {
+        return newFilePath;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setNewFilePath(String newFilePath) {
+        this.newFilePath = newFilePath;
+    }
 }

@@ -1,14 +1,16 @@
 package com.example.caesarwithgui;
 
+import com.example.caesarwithgui.dto.BruteForceResponse;
+import com.example.caesarwithgui.dto.DecryptionResponse;
 import com.example.caesarwithgui.service.CaesarCypherService;
+import com.example.caesarwithgui.dto.EncryptionResponse;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 public class HelloController {
+    @FXML
+    public TitledPane caesarMain;
     @FXML
     private Label filePath;
     @FXML
@@ -29,7 +31,7 @@ public class HelloController {
     private Button exitButton;
 
     @FXML
-    private TextArea resultArea;
+    private TextArea resultAreaOutput;
 
 
     @FXML
@@ -38,21 +40,35 @@ public class HelloController {
         String key = keyInput.getText();
 
         if (!filePath.isEmpty() && !key.isEmpty()) {
-            CaesarCypherService.encrypt(filePath, key);
-            resultArea.setText("Decryption completed.");
+            EncryptionResponse response = CaesarCypherService.encrypt(filePath, key);
+            resultAreaOutput.setText(response.toString());
         } else {
-            resultArea.setText("Please provide both file path and key.");
+            resultAreaOutput.setText("Please provide both file path and key.");
         }
     }
 
     @FXML
     protected void onDecryptButtonClick() {
+        String filePath = filePathInput.getText();
+        String key = keyInput.getText();
 
+        if (!filePath.isEmpty() && !key.isEmpty()) {
+            DecryptionResponse response = CaesarCypherService.decrypt(filePath, key);
+            resultAreaOutput.setText(response.toString());
+        } else {
+            resultAreaOutput.setText("Please provide both file path and key.");
+        }
     }
 
     @FXML
     protected void onBruteForceButtonClick() {
-
+        String filePath = filePathInput.getText();
+        if (!filePath.isEmpty()) {
+            BruteForceResponse response = CaesarCypherService.bruteForceDecrypt(filePath);
+            resultAreaOutput.setText(response.toString());
+        } else {
+            resultAreaOutput.setText("Please provide file path.");
+        }
     }
 
     @FXML

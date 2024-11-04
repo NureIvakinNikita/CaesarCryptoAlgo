@@ -4,6 +4,7 @@ import com.example.caesarwithgui.dto.BruteForceResponse;
 import com.example.caesarwithgui.dto.DecryptionResponse;
 import com.example.caesarwithgui.dto.EncryptionResponse;
 
+
 import java.util.Dictionary;
 import java.util.HashSet;
 import java.util.Set;
@@ -59,7 +60,7 @@ public class CaesarCypherService {
 
 
     public static EncryptionResponse encrypt(String filePath, String key) {
-        String data = FileReaderService.readData(filePath);
+        String data = com.example.caesarwithgui.service.FileReaderService.readData(filePath);
         int offset = Integer.parseInt(key);
         String res = encryptEngData(data, offset);
         String newFilePath = FileReaderService.writeData(filePath, res, "[ENCRYPT]");
