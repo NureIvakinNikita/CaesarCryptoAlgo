@@ -79,10 +79,11 @@ public class HelloController {
     }
 
     public void handleCommandLineArgs(String[] args) {
-        if (args.length == 3) {
+        if (args.length >= 2) {
             String operation = args[0];
             String path = args[1];
-            String key = args[2];
+            String key = null;
+            if(args.length == 3) key = args[2];
 
             filePathInput.setText(path);
             keyInput.setText(key);
@@ -101,6 +102,8 @@ public class HelloController {
                     System.out.println("Invalid operation");
             }
             System.exit(0);
+        } else {
+            System.out.println("Not enough data enter it using UI.");
         }
     }
 }
