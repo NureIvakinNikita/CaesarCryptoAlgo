@@ -2,6 +2,19 @@
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+# Ignore IDE configuration files
+.idea/
+
+# Ignore Maven wrapper files and folders
+.mvn/
+mvnw
+mvnw.cmd
+
+# Ignore specific file path (use forward slashes)
+E:/Java/JavaRushCourse/CaesarWithGui/target/CaesarWithGui-1.0-SNAPSHOT.zip
+
+# Alternatively, if the path above is within your project structure, you can use a relative path:
+target/CaesarWithGui-1.0-SNAPSHOT.zip
 
 ### Eclipse ###
 .apt_generated
